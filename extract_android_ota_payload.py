@@ -18,6 +18,8 @@ def decompress_payload(command, data, size, hash):
   r = p.communicate(data)[0]
   if len(r) != size:
     print("Unexpected size %d %d" % (len(r), size))
+  elif hashlib.sha256(data).digest() != hash:
+    print("Hash mismatch")
   return r
 
 def parse_payload(payload_f, partition, out_f):
@@ -55,13 +57,13 @@ def main(argv):
     payload_file = open(ota_zf.extract('payload.bin', output_dir))
   else:
     payload_file = file(filename)
-  
+
   payload = update_payload.Payload(payload_file)
   payload.Init()
   payload.Describe()
 
   if payload.header.version != update_payload.common.BRILLO_MAJOR_PAYLOAD_VERSION:
-    printf("Unsupported payload version (%d)" % payload.header.version)
+    print('Unsupported payload version (%d)' % payload.header.version)
   else:
     for p in payload.manifest.partitions:
       name = p.partition_name + '.img'
