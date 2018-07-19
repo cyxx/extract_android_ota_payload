@@ -37,7 +37,7 @@ def parse_payload(payload_f, partition, out_f):
       r = decompress_payload('bzcat', data, e.num_blocks * BLOCK_SIZE, operation.data_sha256_hash)
       out_f.write(r)
     else:
-      raise update_payload.error.PayloadError('Unknown operation type (%d)' % operation.type)
+      raise update_payload.error.PayloadError('Unhandled operation type (%d)' % operation.type)
 
 def main(argv):
   try:
@@ -68,8 +68,14 @@ def main(argv):
     for p in payload.manifest.partitions:
       name = p.partition_name + '.img'
       print("Extracting '%s'" % name)
-      out_f = open(os.path.join(output_dir, name), 'w')
-      parse_payload(payload, p, out_f)
+      fname = os.path.join(output_dir, name)
+      out_f = open(fname, 'w')
+      try:
+        parse_payload(payload, p, out_f)
+      except update_payload.error.PayloadError as e:
+        print('Failed: %s' % e)
+        out_f.close()
+        os.unlink(fname)
 
 if __name__ == '__main__':
   main(sys.argv)
