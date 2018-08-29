@@ -9,6 +9,10 @@ import subprocess
 import sys
 import zipfile
 
+# protobufs compiled with protoc 2.5.0 are not compatible with python3
+if sys.version_info[0] != 2:
+  raise Exception("Python 2.x is required")
+
 # from https://android.googlesource.com/platform/system/update_engine/scripts/
 import update_metadata_pb2
 
