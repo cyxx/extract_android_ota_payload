@@ -26,3 +26,8 @@ Extracting 'vendor.img'
 Extracting 'modem.img'
 ```
 
+## Dependencies
+
+```
+python-protobuf
+```
