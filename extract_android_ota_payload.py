@@ -115,7 +115,9 @@ def main(argv):
     output_dir = argv[2]
   except IndexError:
     output_dir = os.getcwd()
-
+  
+  if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
   if filename.endswith('.zip'):
     print("Extracting 'payload.bin' from OTA file...")
     ota_zf = zipfile.ZipFile(filename)
