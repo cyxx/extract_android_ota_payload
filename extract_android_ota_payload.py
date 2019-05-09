@@ -13,7 +13,7 @@ import zipfile
 if sys.version_info[0] != 2:
   raise Exception("Python 2.x is required")
 
-# from https://android.googlesource.com/platform/system/update_engine/scripts/
+# from https://android.googlesource.com/platform/system/update_engine/+/refs/heads/master/scripts/update_payload/
 import update_metadata_pb2
 
 PROGRAMS = [ 'bzcat', 'xzcat' ]
