@@ -135,7 +135,7 @@ def main(argv):
     out_f = open(fname, 'w')
     try:
       parse_payload(payload, p, out_f)
-    except update_payload.error.PayloadError as e:
+    except PayloadError as e:
       print('Failed: %s' % e)
       out_f.close()
       os.unlink(fname)
