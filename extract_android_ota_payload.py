@@ -104,20 +104,7 @@ def parse_payload(payload_f, partition, out_f):
     else:
       raise PayloadError('Unhandled operation type (%d)' % operation.type)
 
-def main(argv):
-  try:
-    filename = argv[1]
-  except:
-    print('Usage: %s payload.bin [output_dir]' % argv[0])
-    sys.exit()
-
-  try:
-    output_dir = argv[2]
-  except IndexError:
-    output_dir = os.getcwd()
-  
-  if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+def main(filename, output_dir):
   if filename.endswith('.zip'):
     print("Extracting 'payload.bin' from OTA file...")
     ota_zf = zipfile.ZipFile(filename)
@@ -141,4 +128,18 @@ def main(argv):
       os.unlink(fname)
 
 if __name__ == '__main__':
-  main(sys.argv)
+  try:
+    filename = argv[1]
+  except:
+    print('Usage: %s payload.bin [output_dir]' % argv[0])
+    sys.exit()
+
+  try:
+    output_dir = argv[2]
+  except IndexError:
+    output_dir = os.getcwd()
+
+  if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
+  main(filename, output_dir)
