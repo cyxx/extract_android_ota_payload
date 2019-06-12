@@ -129,13 +129,13 @@ def main(filename, output_dir):
 
 if __name__ == '__main__':
   try:
-    filename = argv[1]
+    filename = sys.argv[1]
   except:
-    print('Usage: %s payload.bin [output_dir]' % argv[0])
+    print('Usage: %s payload.bin [output_dir]' % sys.argv[0])
     sys.exit()
 
   try:
-    output_dir = argv[2]
+    output_dir = sys.argv[2]
   except IndexError:
     output_dir = os.getcwd()
 
