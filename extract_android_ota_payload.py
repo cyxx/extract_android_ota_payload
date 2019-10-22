@@ -9,10 +9,6 @@ import subprocess
 import sys
 import zipfile
 
-# protobufs compiled with protoc 2.5.0 are not compatible with python3
-if sys.version_info[0] != 2:
-  raise Exception("Python 2.x is required")
-
 # from https://android.googlesource.com/platform/system/update_engine/+/refs/heads/master/scripts/update_payload/
 import update_metadata_pb2
 
@@ -25,7 +21,7 @@ class PayloadError(Exception):
 
 class Payload(object):
   class _PayloadHeader(object):
-    _MAGIC = 'CrAU'
+    _MAGIC = b'CrAU'
 
     def __init__(self):
       self.version = None
@@ -109,9 +105,9 @@ def main(filename, output_dir):
   if filename.endswith('.zip'):
     print("Extracting 'payload.bin' from OTA file...")
     ota_zf = zipfile.ZipFile(filename)
-    payload_file = open(ota_zf.extract('payload.bin', output_dir))
+    payload_file = open(ota_zf.extract('payload.bin', output_dir), 'rb')
   else:
-    payload_file = file(filename)
+    payload_file = open(filename, 'rb')
 
   payload = Payload(payload_file)
   payload.Init()
@@ -120,7 +116,7 @@ def main(filename, output_dir):
     name = p.partition_name + '.img'
     print("Extracting '%s'" % name)
     fname = os.path.join(output_dir, name)
-    out_f = open(fname, 'w')
+    out_f = open(fname, 'wb')
     try:
       parse_payload(payload, p, out_f)
     except PayloadError as e:
