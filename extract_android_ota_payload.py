@@ -98,7 +98,8 @@ def parse_payload(payload_f, partition, out_f):
       r = decompress_payload('bzcat', data, e.num_blocks * BLOCK_SIZE, operation.data_sha256_hash)
       out_f.write(r)
     else:
-      raise PayloadError('Unhandled operation type (%d)' % operation.type)
+      raise PayloadError('Unhandled operation type ({} - {})'.format(operation.type,
+                         update_metadata_pb2.InstallOperation.Type.Name(operation.type)))
 
 def main(filename, output_dir):
   if filename.endswith('.zip'):
