@@ -10,9 +10,10 @@ Incremental firmware images are not supported (source_copy, source_bsdiff operat
 ## Usage
 
 ```
-$ extract_android_ota_payload.py <payload.bin> [target_dir]
-  <payload.bin> : file extracted from the OTA zip file or the OTA zip file
-  <target_dir>  : output directory for the extracted file
+$ extract_android_ota_payload.py <payload.bin> [target_dir] [partition.img]
+  <payload.bin>   : file extracted from the OTA zip file or the OTA zip file
+  <target_dir>    : output directory for the extracted file
+  <partition_img> : name of partition to be extracted
 ```
 
 ## Example
