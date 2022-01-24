@@ -97,6 +97,8 @@ def parse_payload(payload_f, partition, out_f):
     elif operation.type == update_metadata_pb2.InstallOperation.REPLACE_BZ:
       r = decompress_payload('bzcat', data, e.num_blocks * BLOCK_SIZE, operation.data_sha256_hash)
       out_f.write(r)
+    elif operation.type == update_metadata_pb2.InstallOperation.ZERO:
+      out_f.write(b'\x00' * (e.num_blocks * BLOCK_SIZE))
     else:
       raise PayloadError('Unhandled operation type ({} - {})'.format(operation.type,
                          update_metadata_pb2.InstallOperation.Type.Name(operation.type)))
