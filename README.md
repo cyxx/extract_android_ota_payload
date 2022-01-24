@@ -18,7 +18,7 @@ $ extract_android_ota_payload.py <payload.bin> [target_dir]
 ## Example
 
 ```
-$ python extract_android_ota_payload.py marlin-ota-opm4.171019.021.d1-fd6998a5.zip /tmp/
+$ python3 extract_android_ota_payload.py marlin-ota-opm4.171019.021.d1-fd6998a5.zip /tmp/
 Extracting 'boot.img'
 Extracting 'system.img'
 Extracting 'vendor.img'
@@ -29,5 +29,5 @@ Extracting 'modem.img'
 ## Dependencies
 
 ```
-python-protobuf
+python-protobuf,bzcat,xzcat
 ```
