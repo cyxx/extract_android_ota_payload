@@ -103,7 +103,7 @@ def parse_payload(payload_f, partition, out_f):
       raise PayloadError('Unhandled operation type ({} - {})'.format(operation.type,
                          update_metadata_pb2.InstallOperation.Type.Name(operation.type)))
 
-def main(filename, output_dir):
+def main(filename, output_dir, partition):
   if filename.endswith('.zip'):
     print("Extracting 'payload.bin' from OTA file...")
     ota_zf = zipfile.ZipFile(filename)
@@ -116,6 +116,8 @@ def main(filename, output_dir):
 
   for p in payload.manifest.partitions:
     name = p.partition_name + '.img'
+    if (partition is not None and name != partition):
+      continue
     print("Extracting '%s'" % name)
     fname = os.path.join(output_dir, name)
     out_f = open(fname, 'wb')
@@ -130,7 +132,7 @@ if __name__ == '__main__':
   try:
     filename = sys.argv[1]
   except:
-    print('Usage: %s payload.bin [output_dir]' % sys.argv[0])
+    print('Usage: %s payload.bin [output_dir] [partition.img]' % sys.argv[0])
     sys.exit()
 
   try:
@@ -138,7 +140,21 @@ if __name__ == '__main__':
   except IndexError:
     output_dir = os.getcwd()
 
+  try:
+    partition = sys.argv[3]
+  except IndexError:
+    try:
+      partition = sys.argv[2]
+    except IndexError:
+      partition = None
+
+  if partition is not None and not partition.endswith('.img'):
+    partition = None
+
+  if output_dir.endswith('.img'):
+    output_dir = os.getcwd()
+
   if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-  main(filename, output_dir)
+  main(filename, output_dir, partition)
